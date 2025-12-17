@@ -1,0 +1,10 @@
+.TH SIMPLE_SHELL 1
+.SH NAME
+simple_shell \- simple UNIX command interpreter
+.SH SYNOPSIS
+.B simple_shell
+.SH DESCRIPTION
+This shell executes commands read from standard input.
+.SH AUTHOR
+Bryan Tech
+Koralys Figueroa
