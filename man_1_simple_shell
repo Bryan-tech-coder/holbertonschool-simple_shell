@@ -1,10 +1,21 @@
-.TH SIMPLE_SHELL 1
+.TH SIMPLE_SHELL 1 "September 2025" "Holberton School" "Simple Shell Manual"
 .SH NAME
-simple_shell \- simple UNIX command interpreter
+simple_shell \- a simple UNIX command interpreter
 .SH SYNOPSIS
-.B simple_shell
+.B hsh
 .SH DESCRIPTION
-This shell executes commands read from standard input.
+Simple Shell is a basic UNIX command interpreter written in C.
+It executes commands read from standard input.
+The shell supports interactive and non-interactive modes.
+.SH USAGE
+Interactive mode:
+.PP
+($) /bin/ls
+($) exit
+.PP
+Non-interactive mode:
+.PP
+echo "/bin/ls" | ./hsh
 .SH AUTHOR
-Bryan Tech
-Koralys Figueroa
+Bryan Ramos Torres
+Koralys Figueroa Santiago
