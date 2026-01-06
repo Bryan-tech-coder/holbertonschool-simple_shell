@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "Shell.h"
 
 /**
  * env_fetch - Handle built-in commands or execute external
@@ -10,30 +10,30 @@
  */
 int env_fetch(char **args, char *input, int count)
 {
-	char **env = environ;
-	int i = 0;
+    char **env = environ;
+    int i = 0;
 
-	if (strcmp(args[0], "exit") == 0)
-	{
-		free(input);
-		exit(0); /* Exit immediately */
-	}
+    if (strcmp(args[0], "exit") == 0)
+    {
+        free(input);
+        exit(0); /* Exit immediately */
+    }
 
-	if (strcmp(args[0], "env") == 0)
-	{
-		while (env[i])
-		{
-			printf("%s\n", env[i]);
-			i++;
-		}
-		return (0);
-	}
+    if (strcmp(args[0], "env") == 0)
+    {
+        while (env[i])
+        {
+            printf("%s\n", env[i]);
+            i++;
+        }
+        return (0);
+    }
 
-	/* Execute external command if found in PATH or absolute/relative */
-	if (find_or_execute_command(args) == -1)
-		printf("./hsh: %d: %s: not found\n", count, args[0]);
+    /* Execute external command if found in PATH or absolute/relative */
+    if (find_or_execute_command(args) == -1)
+        printf("./hsh: %d: %s: not found\n", count, args[0]);
 
-	return (0);
+    return (0);
 }
 
 /**
@@ -44,17 +44,17 @@ int env_fetch(char **args, char *input, int count)
  */
 char *_getenv(const char *name)
 {
-	size_t len = strlen(name);
-	char **env = environ;
+    size_t len = strlen(name);
+    char **env = environ;
 
-	while (*env)
-	{
-		if (strncmp(*env, name, len) == 0 && (*env)[len] == '=')
-			return (*env + len + 1);
-		env++;
-	}
+    while (*env)
+    {
+        if (strncmp(*env, name, len) == 0 && (*env)[len] == '=')
+            return (*env + len + 1);
+        env++;
+    }
 
-	return (NULL);
+    return (NULL);
 }
 
 /**
@@ -65,22 +65,22 @@ char *_getenv(const char *name)
  */
 char **parse_input(char *input)
 {
-	char **args = malloc(MAX_ARGS * sizeof(char *));
-	char *token;
-	int i = 0;
+    char **args = malloc(MAX_ARGS * sizeof(char *));
+    char *token;
+    int i = 0;
 
-	if (!args)
-		exit(EXIT_FAILURE);
+    if (!args)
+        exit(EXIT_FAILURE);
 
-	token = strtok(input, " \n");
-	while (token && i < MAX_ARGS - 1)
-	{
-		args[i++] = token;
-		token = strtok(NULL, " \n");
-	}
-	args[i] = NULL;
+    token = strtok(input, " \n");
+    while (token && i < MAX_ARGS - 1)
+    {
+        args[i++] = token;
+        token = strtok(NULL, " \n");
+    }
+    args[i] = NULL;
 
-	return (args);
+    return (args);
 }
 
 /**
@@ -91,21 +91,21 @@ char **parse_input(char *input)
  */
 int execute_command(char **args)
 {
-	pid_t pid = fork();
-	int status;
+    pid_t pid = fork();
+    int status;
 
-	if (pid == -1)
-		return (-1);
+    if (pid == -1)
+        return (-1);
 
-	if (pid == 0)
-	{
-		execve(args[0], args, environ);
-		exit(EXIT_FAILURE);
-	}
+    if (pid == 0)
+    {
+        execve(args[0], args, environ);
+        exit(EXIT_FAILURE);
+    }
 
-	wait(&status);
+    wait(&status);
 
-	return (0);
+    return (0);
 }
 
 /**
@@ -116,40 +116,40 @@ int execute_command(char **args)
  */
 int find_or_execute_command(char **args)
 {
-	char *path, *copy, *dir, *cmd;
-	size_t len;
+    char *path, *copy, *dir, *cmd;
+    size_t len;
 
-	/* Absolute or relative path */
-	if (access(args[0], X_OK) == 0)
-		return (execute_command(args));
+    /* Absolute or relative path */
+    if (access(args[0], X_OK) == 0)
+        return (execute_command(args));
 
-	path = _getenv("PATH");
-	if (!path || path[0] == '\0')
-		return (-1); /* Do NOT fork if PATH empty */
+    path = _getenv("PATH");
+    if (!path || path[0] == '\0')
+        return (-1); /* Do NOT fork if PATH empty */
 
-	copy = strdup(path);
-	if (!copy)
-		return (-1);
+    copy = strdup(path);
+    if (!copy)
+        return (-1);
 
-	for (dir = strtok(copy, ":"); dir; dir = strtok(NULL, ":"))
-	{
-		len = strlen(dir) + strlen(args[0]) + 2;
-		cmd = malloc(len);
-		if (!cmd)
-			continue;
+    for (dir = strtok(copy, ":"); dir; dir = strtok(NULL, ":"))
+    {
+        len = strlen(dir) + strlen(args[0]) + 2;
+        cmd = malloc(len);
+        if (!cmd)
+            continue;
 
-		sprintf(cmd, "%s/%s", dir, args[0]);
-		if (access(cmd, X_OK) == 0)
-		{
-			args[0] = cmd;
-			execute_command(args);
-			free(cmd);
-			free(copy);
-			return (0);
-		}
-		free(cmd);
-	}
+        sprintf(cmd, "%s/%s", dir, args[0]);
+        if (access(cmd, X_OK) == 0)
+        {
+            args[0] = cmd;
+            execute_command(args);
+            free(cmd);
+            free(copy);
+            return (0);
+        }
+        free(cmd);
+    }
 
-	free(copy);
-	return (-1);
+    free(copy);
+    return (-1);
 }
