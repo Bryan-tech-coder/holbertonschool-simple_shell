@@ -1,21 +1,38 @@
-.TH SIMPLE_SHELL 1 "September 2025" "Holberton School" "Simple Shell Manual"
+.TH HSH 1 "Holberton School" "Simple Shell" "User Commands"
 .SH NAME
-simple_shell \- a simple UNIX command interpreter
+hsh \- simple UNIX command interpreter
 .SH SYNOPSIS
 .B hsh
 .SH DESCRIPTION
-Simple Shell is a basic UNIX command interpreter written in C.
-It executes commands read from standard input.
-The shell supports interactive and non-interactive modes.
-.SH USAGE
-Interactive mode:
+.B hsh
+is a simple UNIX command line interpreter that reads commands from
+standard input and executes them.
+
+It supports command execution with arguments using the PATH
+environment variable.
+
+The shell works in both interactive and non-interactive modes.
+.SH INTERACTIVE MODE
+When executed without arguments, the shell displays a prompt and
+waits for the user to enter commands.
+
+Example:
 .PP
-($) /bin/ls
+($) ls
+.br
+($) pwd
+.br
 ($) exit
+.SH NON-INTERACTIVE MODE
+Commands can be piped into the shell using standard input.
+
+Example:
 .PP
-Non-interactive mode:
-.PP
-echo "/bin/ls" | ./hsh
+echo "ls" | ./hsh
+.SH EXIT STATUS
+The shell returns the exit status of the last executed command.
+.SH ENVIRONMENT
+The shell uses the PATH environment variable to locate executable
+commands.
 .SH AUTHOR
-Bryan Ramos Torres
-Koralys Figueroa Santiago
+Written by Koralys Figueroa and Bryan
