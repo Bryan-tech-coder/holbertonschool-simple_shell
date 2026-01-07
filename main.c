@@ -1,7 +1,17 @@
-#include <stdio.h>
+#include "shell.h"
 
-int main(void)
+void execute_command(char **argv)
 {
-    printf("$ ");
-    return 0;
+    pid_t pid;
+    int status;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        execve(argv[0], argv, NULL);
+        perror("Error");
+        exit(1);
+    }
+    else
+        wait(&status);
 }
