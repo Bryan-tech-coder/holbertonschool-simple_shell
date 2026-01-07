@@ -25,3 +25,6 @@ Entener como usar variables de entorno y el PATH para ejecutar programas.
 -control ve versiones: **github**
 
 
+## Authors
+koralys Figueroa
+Bryan Torres
