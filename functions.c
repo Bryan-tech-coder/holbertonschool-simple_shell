@@ -15,8 +15,7 @@ int env_fetch(char **args, char *input, int count)
 
 	if (strcmp(args[0], "exit") == 0)
 	{
-		free(input);
-		exit(0); /* Exit immediately */
+		return (-1);
 	}
 
 	if (strcmp(args[0], "env") == 0)
