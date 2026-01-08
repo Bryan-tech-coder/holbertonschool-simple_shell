@@ -1,59 +1,43 @@
 #include "hsh.h"
 
 /**
- * tokenize - separa una línea en tokens usando espacio como delimitador
+ * tokenize - divide una línea en tokens (argumentos)
  * @line: línea de entrada
- * 
- * Return: arreglo de strings terminado en NULL
+ * Return: array de strings terminado en NULL
  */
+#define TOK_BUFSIZE 64
+#define TOK_DELIM " \t\r\n\a"
+
 char **tokenize(char *line)
 {
-	char **tokens = NULL;
-	char *token = NULL;
-	size_t i = 0, count = 0;
+	int bufsize = TOK_BUFSIZE, position = 0;
+	char **tokens = malloc(bufsize * sizeof(char *));
+	char *token;
 
-	if (line == NULL)
-		return (NULL);
-
-	/* contar tokens */
-	token = strtok(line, " ");
-	while (token != NULL)
-	{
-		count++;
-		token = strtok(NULL, " ");
-	}
-
-	if (count == 0)
-		return (NULL);
-
-	tokens = malloc(sizeof(char *) * (count + 1));
 	if (!tokens)
-		return (NULL);
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
 
-	/* volver a tokenizar para llenar el arreglo */
-	token = strtok(line, " ");
+	token = strtok(line, TOK_DELIM);
 	while (token != NULL)
 	{
-		tokens[i++] = strdup(token);
-		token = strtok(NULL, " ");
-	}
-	tokens[i] = NULL;
+		tokens[position++] = token;
 
+		if (position >= bufsize)
+		{
+			bufsize += TOK_BUFSIZE;
+			tokens = realloc(tokens, bufsize * sizeof(char *));
+			if (!tokens)
+			{
+				perror("realloc");
+				exit(EXIT_FAILURE);
+			}
+		}
+
+		token = strtok(NULL, TOK_DELIM);
+	}
+	tokens[position] = NULL;
 	return (tokens);
-}
-
-/**
- * free_tokens - libera memoria de un arreglo de tokens
- * @tokens: arreglo de strings terminado en NULL
- */
-void free_tokens(char **tokens)
-{
-	size_t i;
-
-	if (!tokens)
-		return;
-
-	for (i = 0; tokens[i]; i++)
-		free(tokens[i]);
-	free(tokens);
 }

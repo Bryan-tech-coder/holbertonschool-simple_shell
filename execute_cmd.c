@@ -1,31 +1,39 @@
 #include "hsh.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <sys/types.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
-int execute_cmd(char **args)
+/**
+ * execute_cmd - Ejecuta un comando externo
+ * @argv: array de argumentos, argv[0] es el comando
+ * Return: 0 si éxito, otro valor si error
+ */
+int execute_cmd(char **argv)
 {
-    pid_t pid;
-    int status;
+	pid_t pid;
+	int status;
 
-    pid = fork();
-    if (pid == 0) // child
-    {
-        if (execve(args[0], args, NULL) == -1)
-        {
-            perror("hsh");
-            exit(EXIT_FAILURE);
-        }
-    }
-    else if (pid < 0) // error
-    {
-        perror("hsh");
-        return (-1);
-    }
-    else // parent
-    {
-        waitpid(pid, &status, 0);
-    }
-    return (status);
+	if (argv[0] == NULL)
+		return (1);
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return (1);
+	}
+	if (pid == 0)
+	{
+		if (execvp(argv[0], argv) == -1)
+		{
+			perror("hsh");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+	}
+
+	return (0);
 }

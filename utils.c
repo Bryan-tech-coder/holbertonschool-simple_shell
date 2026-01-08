@@ -1,32 +1,26 @@
 #include "hsh.h"
 
 /**
- * _strlen - returns length of string
- * @s: input string
- * Return: length
+ * free_args - libera array de strings
+ * @args: array de strings
  */
-int _strlen(char *s)
+void free_args(char **args)
 {
-    int i = 0;
-    while (s[i])
-        i++;
-    return i;
+	free(args);
 }
 
 /**
- * _strcpy - copies string from src to dest
- * @dest: destination
- * @src: source
- * Return: pointer to dest
+ * _strcmp - compara dos strings
+ * @s1: primer string
+ * @s2: segundo string
+ * Return: 0 si son iguales, != 0 si no
  */
-char *_strcpy(char *dest, char *src)
+int _strcmp(const char *s1, const char *s2)
 {
-    int i = 0;
-    while (src[i])
-    {
-        dest[i] = src[i];
-        i++;
-    }
-    dest[i] = '\0';
-    return dest;
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
 }
