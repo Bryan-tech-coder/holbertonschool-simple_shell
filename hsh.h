@@ -4,13 +4,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <string.h>
 
-/* Prototipos */
-int execute_cmd(char **argv);
+/* Prototypes */
 void shell_loop(void);
+void execute_cmd(char **argv);
 char **tokenize(char *line);
-void free_args(char **args);
+void free_tokens(char **tokens);
 int _strcmp(const char *s1, const char *s2);
 
 #endif /* HSH_H */

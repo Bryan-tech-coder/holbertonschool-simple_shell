@@ -1,26 +1,22 @@
 #include "hsh.h"
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 /**
- * execute_cmd - Ejecuta un comando externo
- * @argv: array de argumentos, argv[0] es el comando
- * Return: 0 si éxito, otro valor si error
+ * execute_cmd - Execute command using fork and execve
+ * @argv: Tokenized arguments
  */
-int execute_cmd(char **argv)
+void execute_cmd(char **argv)
 {
 	pid_t pid;
 	int status;
 
-	if (argv[0] == NULL)
-		return (1);
+	if (!argv || !argv[0])
+		return;
 
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
-		return (1);
+		return;
 	}
 	if (pid == 0)
 	{
@@ -34,6 +30,4 @@ int execute_cmd(char **argv)
 	{
 		waitpid(pid, &status, 0);
 	}
-
-	return (0);
 }

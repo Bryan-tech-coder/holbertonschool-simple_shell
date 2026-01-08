@@ -1,9 +1,9 @@
 #include "hsh.h"
 
 /**
- * tokenize - divide una línea en tokens (argumentos)
- * @line: línea de entrada
- * Return: array de strings terminado en NULL
+ * tokenize - Splits line into array of arguments
+ * @line: Input string
+ * Return: Array of tokens
  */
 #define TOK_BUFSIZE 64
 #define TOK_DELIM " \t\r\n\a"
@@ -35,9 +35,18 @@ char **tokenize(char *line)
 				exit(EXIT_FAILURE);
 			}
 		}
-
 		token = strtok(NULL, TOK_DELIM);
 	}
 	tokens[position] = NULL;
 	return (tokens);
+}
+
+/**
+ * free_tokens - Frees tokenized array
+ * @tokens: Array to free
+ */
+void free_tokens(char **tokens)
+{
+	if (tokens)
+		free(tokens);
 }

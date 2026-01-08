@@ -1,29 +1,26 @@
 #include "hsh.h"
 
 /**
- * shell_loop - Bucle principal del shell
+ * shell_loop - Reads a line, tokenizes it, and executes command
  */
 void shell_loop(void)
 {
 	char *line = NULL;
-	size_t bufsize = 0;
+	size_t len = 0;
+	ssize_t read;
 	char **args;
-	int status;
 
-	while (1)
+	read = getline(&line, &len, stdin);
+	if (read == -1)
 	{
-		printf("$ ");
-		if (getline(&line, &bufsize, stdin) == -1)
-			break;
-
-		args = tokenize(line);
-		if (args == NULL)
-			continue;
-
-		status = execute_cmd(args);
-		(void)status; /* Evita warning si no usamos status */
-
-		free_args(args);
+		free(line);
+		exit(EXIT_SUCCESS);
 	}
+
+	args = tokenize(line);
+	if (args)
+		execute_cmd(args);
+
+	free_tokens(args);
 	free(line);
 }
