@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "hsh.h"
 
 /**
  * shell_loop - reads input, tokenizes and executes commands
