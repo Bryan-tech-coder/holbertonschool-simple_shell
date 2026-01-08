@@ -2,40 +2,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/wait.h>
-#include <string.h>
+
 /**
- * execute_cmd - ejecuta un comando usando fork y execvp
- * @argv: arreglo de argumentos, argv[0] es el comando
- * 
- * Return: estado de salida del hijo, o -1 si hubo error
+ * main - Entry point for the simple shell
+ *
+ * Return: Always 0
  */
-int execute_cmd(char **argv)
+int main(void)
 {
-	pid_t pid;
 	int status;
+	char *line = NULL;
+	size_t n = 0;
 
-	if (argv == NULL || argv[0] == NULL)
-		return (-1);
-
-	pid = fork();
-	if (pid == -1)
+	while (1)
 	{
-		perror("fork");
-		return (-1);
-	}
-	if (pid == 0) /* proceso hijo */
-	{
-		if (execvp(argv[0], argv) == -1)
+		printf("$ "); /* prompt */
+		if (getline(&line, &n, stdin) == -1)
 		{
-			perror("hsh");
-			exit(EXIT_FAILURE);
+			printf("\n");
+			break;
 		}
-	}
-	else /* proceso padre */
-	{
-		waitpid(pid, &status, 0);
+
+		/* Aquí llamarás a shell_loop o tokenize según tu implementación */
+		status = shell_loop(line);
+		if (status == -1) /* condición para salir del shell */
+			break;
 	}
 
-	return (status);
+	free(line);
+	return (0);
 }
