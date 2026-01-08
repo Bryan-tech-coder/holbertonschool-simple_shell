@@ -1,12 +1,11 @@
 #include "hsh.h"
 
-/**
- * main - Entry point for simple shell
- *
- * Return: 0 on success
- */
 int main(void)
 {
-	shell_loop();
-	return (0);
+    while (1)
+    {
+        printf("$ ");    /* Mostrar el prompt */
+        shell_loop();    /* Llamada correcta sin argumentos y sin asignar valor */
+    }
+    return (0);
 }
