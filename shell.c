@@ -39,8 +39,7 @@ int run_shell(int mode)
 
 		if (comparator == -1)
 		{
-			free(input);
-			exit(0);
+			break;
 		}
 	}
 
