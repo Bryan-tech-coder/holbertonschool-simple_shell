@@ -1,33 +1,27 @@
 #include "hsh.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-/**
- * shell_loop - reads input, tokenizes and executes commands
- */
 void shell_loop(void)
 {
     char *line = NULL;
-    size_t len = 0;
-    ssize_t nread;
     char **args;
+    size_t n;
     int status;
 
     while (1)
     {
-        if (isatty(STDIN_FILENO))
-            write(1, "($) ", 4);
+        printf("$ ");
+        if (getline(&line, &n, stdin) == -1)
+            break;
 
-        nread = getline(&line, &len, stdin);
-        if (nread == -1)
-        {
-            free(line);
-            exit(EXIT_SUCCESS);
-        }
+        args = tokenize(line); // tu función tokenize
+        if (!args)
+            continue;
 
-        line[nread - 1] = '\0'; /* remove newline */
-        args = tokenize(line);
-        if (args[0] != NULL)
-            status = execute_cmd(args);
-
+        status = execute_cmd(args);
         free(args);
     }
+
+    free(line);
 }

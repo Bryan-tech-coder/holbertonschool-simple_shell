@@ -1,32 +1,31 @@
 #include "hsh.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
-/**
- * execute_cmd - executes a command using fork and execve
- * @args: arguments array
- * Return: 0 always
- */
 int execute_cmd(char **args)
 {
     pid_t pid;
     int status;
 
     pid = fork();
-    if (pid == -1)
+    if (pid == 0) // child
     {
-        perror("fork");
-        return (1);
-    }
-    if (pid == 0)
-    {
-        if (execve(args[0], args, environ) == -1)
+        if (execve(args[0], args, NULL) == -1)
         {
-            perror(args[0]);
-            _exit(EXIT_FAILURE);
+            perror("hsh");
+            exit(EXIT_FAILURE);
         }
     }
-    else
+    else if (pid < 0) // error
+    {
+        perror("hsh");
+        return (-1);
+    }
+    else // parent
     {
         waitpid(pid, &status, 0);
     }
-    return (0);
+    return (status);
 }

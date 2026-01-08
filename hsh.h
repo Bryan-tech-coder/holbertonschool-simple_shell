@@ -16,7 +16,7 @@ int main(void);
 void shell_loop(void);
 
 /* execute */
-void execute_cmd(char **argv);
+int execute_cmd(char **argv);
 
 /* tokenizer */
 char **tokenize(char *line);

@@ -72,7 +72,7 @@ char **tokenize(char *line)
  * execute_cmd - Executes a command
  * @argv: argument vector
  */
-void execute_cmd(char **argv)
+int execute_cmd(char **argv)
 {
 	if (execve(argv[0], argv, environ) == -1)
 	{
