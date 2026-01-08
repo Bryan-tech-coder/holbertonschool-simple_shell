@@ -1,5 +1,7 @@
 #include "Shell.h"
 
+int last_status = 0;
+
 /**
 	* env_fetch - Handle built-in commands or execute external
 	* @args: Tokenized input
@@ -104,7 +106,15 @@ int execute_command(char **args)
 		exit(EXIT_FAILURE);
 	}
 
-	wait(&status);
+	if (wait(&status) == -1)
+		return (-1);
+
+	if (WIFEXITED(status))
+		last_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		last_status = 128 + WTERMSIG(status);
+	else
+		last_status = status;
 
 	return (0);
 }
