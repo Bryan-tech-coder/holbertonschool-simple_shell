@@ -13,6 +13,8 @@ int env_fetch(char **args, char *input, int count)
 	char **env = environ;
 	int i = 0;
 
+	(void)input;
+
 	if (strcmp(args[0], "exit") == 0)
 	{
 		return (-1);
