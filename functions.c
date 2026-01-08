@@ -34,7 +34,10 @@ int env_fetch(char **args, char *input, int count)
 
 	/* Execute external command if found in PATH or absolute/relative */
 	if (find_or_execute_command(args) == -1)
-		printf("./hsh: %d: %s: not found\n", count, args[0]);
+	{
+		fprintf(stderr, "./hsh: %d: %s: not found\n", count, args[0]);
+		last_status = 127;
+	}
 
 	return (0);
 }
