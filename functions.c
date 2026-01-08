@@ -133,8 +133,8 @@ int find_or_execute_command(char **args)
 	char *path, *copy, *dir, *cmd;
 	size_t len;
 
-	/* Absolute or relative path */
-	if (access(args[0], X_OK) == 0)
+	/* Absolute or relative path: only treat as path if it contains '/' */
+	if (strchr(args[0], '/') && access(args[0], X_OK) == 0)
 		return (execute_command(args));
 
 	path = _getenv("PATH");
