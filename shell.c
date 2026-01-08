@@ -1,5 +1,9 @@
-#include "hsh.h"
-
+#include "hsh.h'
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <string.h>
 /**
  * execute_cmd - ejecuta un comando usando fork y execvp
  * @argv: arreglo de argumentos, argv[0] es el comando
