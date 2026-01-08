@@ -1,27 +1,36 @@
 #include "hsh.h"
-#include <stdio.h>
-#include <stdlib.h>
 
+/**
+ * shell_loop - bucle principal de la shell
+ * 
+ * Este bucle lee línea por línea, tokeniza y ejecuta comandos.
+ */
 void shell_loop(void)
 {
-    char *line = NULL;
-    char **args;
-    size_t n;
-    int status;
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t read;
+	char **args;
 
-    while (1)
-    {
-        printf("$ ");
-        if (getline(&line, &n, stdin) == -1)
-            break;
+	while (1)
+	{
+		printf("$ ");
+		read = getline(&line, &len, stdin);
+		if (read == -1) /* EOF o error */
+			break;
 
-        args = tokenize(line); // tu función tokenize
-        if (!args)
-            continue;
+		/* Remover el salto de línea */
+		if (line[read - 1] == '\n')
+			line[read - 1] = '\0';
 
-        status = execute_cmd(args);
-        free(args);
-    }
+		args = tokenize(line);
+		if (args == NULL)
+			continue;
 
-    free(line);
+		execute_cmd(args);
+
+		free_tokens(args);
+	}
+
+	free(line);
 }

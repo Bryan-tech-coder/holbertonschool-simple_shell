@@ -5,20 +5,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/types.h>
 #include <sys/wait.h>
+#include <errno.h>
 
-extern char **environ;
-
-/* main */
-int main(void);
-
-/* shell loop */
-void shell_loop(void);
-
-/* execute */
+/* Prototipos */
 int execute_cmd(char **argv);
-
-/* tokenizer */
+void shell_loop(void);
 char **tokenize(char *line);
+void free_tokens(char **tokens);
 
-#endif
+#endif /* HSH_H */
